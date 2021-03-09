@@ -1,8 +1,8 @@
 function FormField({ type, id, fname, onChange, caption, value, error, labelClassName, containerClassName, ...attr}){
   return (
     <section className={containerClassName}>
-    <label className={labelClassName}>{caption}</label>
-    <input class="placeholder-blue-500 placeholder-opacity-50 md:focus:placeholder-red-600 align-middle m-4 text-center text-base font-serif"
+    <label  class="block text-gray-700 text-sm font-bold mb-2" className={labelClassName}>{caption}</label>
+    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:ring-purple-600 focus:shadow-outline"
         type={type}
         id={id}
         name={fname}

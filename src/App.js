@@ -14,22 +14,24 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 function App() {
   return (
-      <Router>
-        <section>
-          <BrandHeader></BrandHeader>
-          <Switch>
-            <Route path="/" exact>
-                <Home />
-            </Route>
-            <Route path="/todos" exact>
-              <Todo />
-            </Route>                       
-            <Route path="/login" exact>
-                <Login></Login>                             
-            </Route>
-          </Switch>
-        </section>
-      </Router>
+    <section class="back">
+        <Router class> 
+          <section>
+            <BrandHeader></BrandHeader>
+            <Switch>
+              <Route path="/" exact>
+                  <Home />
+              </Route>
+              <Route path="/todos" exact>
+                <Todo />
+              </Route>                       
+              <Route path="/login" exact>
+                  <Login></Login>                             
+              </Route>
+            </Switch>
+          </section>
+        </Router>
+    </section>
   );
 }
 
