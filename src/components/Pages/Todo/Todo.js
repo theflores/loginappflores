@@ -4,11 +4,29 @@ import NewTodo from "./NewTodo";
 import TodoList from "./TodoList";
 import "./TodoList.css";
 
+/*Para importar la carpeta de firebase*/
+import firebaseint from '../../firebaseint';
+
 function Todo(){
   const [todoData, setTodoData] = useState({
     todos:[],
     newTodo:"",
   });
+
+/*Firebase ligarla al server*/
+  useEffect(
+    ()=>{
+      const todosRef = firebaseSDK.database().ref('todos').orderByKey().limitToLast(100);
+      todosRef.on('child_added', snapshot => {
+        let newTodo = { ...snapshot.val(), fb_id: snapshot.key };
+        let newTodos = todoData.todos;
+        newTodos.push(newTodo);
+        setTodoData({...todoData, todos: newTodos});
+      })
+    },
+    []
+  );
+
   const onChange = (e)=>{
     const {name, value} = e.currentTarget;
     setTodoData({...todoData, newTodo: value});
