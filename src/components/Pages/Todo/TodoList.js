@@ -11,7 +11,9 @@ function TodoListItem({descripcion, id, fb_id, completed, doneHandler, deleteHan
   }
 
   const styles = {
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(49, 78, 82, 1)",
+    color:"rgba(242, 161, 84, 1)",
+    margin: "1em",
     display: "flex",
     padding: "1rem",
     borderBottom: "",
