@@ -1,11 +1,11 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 import NewTodo from "./NewTodo";
 import TodoList from "./TodoList";
 import "./TodoList.css";
 
 /*Para importar la carpeta de firebase*/
-import firebaseint from '../../firebaseint';
+import firebaseSDK from '../../../firebaseint';
 
 function Todo(){
   const [todoData, setTodoData] = useState({
@@ -22,7 +22,28 @@ function Todo(){
         let newTodos = todoData.todos;
         newTodos.push(newTodo);
         setTodoData({...todoData, todos: newTodos});
-      })
+      });
+      todosRef.on('child_removed', (snapshot)=>{
+        const deletedKey = snapshot.key;
+        let newTodos = todoData.todos.filter(o=>{
+          return o.fb_id !==deletedKey;
+        });
+        setTodoData({ ...todoData, todos: newTodos });
+      });
+      todosRef.on('child_changed', (snapshot) => {
+        const changedKey = snapshot.key;
+        const data = snapshot.val();
+        let newTodos = todoData.todos.map(o => {
+          if (o.fb_id == changedKey) {
+            o = {...o, ...data};
+          }
+          return o;
+        });
+        setTodoData({ ...todoData, todos: newTodos });
+      });
+      return ()=>{
+        todosRef.off();
+      }
     },
     []
   );
@@ -37,27 +58,37 @@ function Todo(){
       completed:false,
       id : new Date().getTime()
     };
-    let newTodos = todoData.todos;
+    firebaseSDK.database().ref("todos").push(newToo);
+    /*let newTodos = todoData.todos;
     newTodos.push(newToo);
 
-    setTodoData({todos:newTodos, newTodo: ""});
+    setTodoData({todos:newTodos, newTodo: ""});*/
   }
   const doneHandler = (id)=>{
-    const newTodos = todoData.todos.map((o)=>{
+    const ref = firebaseSDK.database().ref("todos")
+    const fbTodo = ref.child(id);
+    const lcTodo = todoData.todos.find( (o)=>{
+      return o.fb_id === id;
+    });
+    fbTodo.update({
+      "completed": !lcTodo.completed
+    });
+    /*const newTodos = todoData.todos.map((o)=>{
       if(o.id == id){
         o.completed = !o.completed;
       }
       return o;
     });
 
-    setTodoData({...todoData, todos:newTodos});
+    setTodoData({...todoData, todos:newTodos});*/
   };
   const deleteHandler = (id)=>{
-    const newTodos = todoData.todos.filter((o) => {
+    
+    /*const newTodos = todoData.todos.filter((o) => {
       return o.id !==id;
     });
 
-    setTodoData({ ...todoData, todos: newTodos });
+    setTodoData({ ...todoData, todos: newTodos });*/
   }
   const tmpTodos = todoData.todos.map( (o)=>{return JSON.stringify(o)} ).join(" | ");
   return (
@@ -78,3 +109,7 @@ function Todo(){
 }
 
 export default Todo;
+
+
+
+
