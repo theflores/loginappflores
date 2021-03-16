@@ -15,16 +15,18 @@ function TodoListItem({descripcion, id, fb_id, completed, doneHandler, deleteHan
     display: "flex",
     padding: "1rem",
     borderBottom: "",
-    justifyContent: "space-between",
-    alingItems: "Center,"
+    justifyContent:"space-between",
+    alignItems:"center",
   }
 
   const myClass = (completed)?"striked": "";
   return (
-    <li>
+    <li style={styles}>
     <span className={myClass}>{descripcion}</span>
-    <MdDone onClick={onClick}></MdDone>
-    <MdDelete onClick={onDeleteClick}></MdDelete>
+    <span className="flex">
+    <MdDone style={{"cursor":"pointer","padding":"0.5rem"}} size="2.5em" onClick={onClick}></MdDone>
+    <MdDelete style={{ "cursor": "pointer", "padding": "0.5rem" }} size="2.5em" onClick={onDeleteClick}></MdDelete>
+    </span>
   </li>);
 }
 
@@ -32,7 +34,7 @@ function TodoList({todos, doneHandler, deleteHandler}){
   const todoItems = todos.map((o)=>{
     return (
       <TodoListItem
-        key={o.doneHandlerid}
+        key={o.id}
         descripcion={o.description}
         id={o.id}
         fb_id={o.fb_id}
